@@ -140,7 +140,7 @@ var StudentCreate = React.createClass({
             </tbody>
           </table>
           <button className={"btn btn-default"} onClick={this.props.onClickIndexLink} >Back to Index</button>
-          <button className={"btn btn-success"} onClick={} type="submit">Create</button>
+          <button className={"btn btn-success"} type="submit">Create</button>
         </form>
       </div>
     );
