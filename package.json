@@ -1,0 +1,33 @@
+{
+  "name": "api_client_r1",
+  "version": "1.0.0",
+  "description": "API Client Demo.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shakil-fg/api_client_r1.git"
+  },
+  "keywords": [
+    "api",
+    "demo"
+  ],
+  "author": "Tahmid Shakil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shakil-fg/api_client_r1/issues"
+  },
+  "homepage": "https://github.com/shakil-fg/api_client_r1#readme",
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.13.0",
+    "jquery": "^3.1.0"
+  }
+}

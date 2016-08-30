@@ -1,5 +1,5 @@
 var json_data = [{"id":1,"name":"Student 1","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:47:34.673Z","updated_at":"2016-08-23T15:47:34.673Z"},{"id":2,"name":"Student 2","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:16.509Z","updated_at":"2016-08-23T15:48:16.509Z"},{"id":3,"name":"Student 3","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:23.469Z","updated_at":"2016-08-23T15:48:23.469Z"},{"id":4,"name":"Student 4","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:27.484Z","updated_at":"2016-08-23T15:48:27.484Z"},{"id":5,"name":"Student 5","gpa":4.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:37.621Z","updated_at":"2016-08-23T15:48:37.621Z"}]
-var base_url = "http://0.0.0.0:5598/"
+var base_url = "http://0.0.0.0:9000/"
 
 var pages = {
   STUDENTS: "STUDENTS",
@@ -32,9 +32,6 @@ var Students = React.createClass({
           <thead>
             <tr>
               <th>Name</th>
-              <th>Level</th>
-              <th>GPA</th>
-              <th>Address</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
@@ -53,9 +50,6 @@ var Student = React.createClass({
     return (
       <tr>
         <td><a href="#" onClick={this.handleLink}>{this.props.name}</a></td>
-        <td>{this.props.level}</td>
-        <td>{this.props.gpa}</td>
-        <td>{this.props.address}</td>
       </tr>
     );
   }
@@ -66,8 +60,8 @@ var StudentInfo = React.createClass({
     this.props.onClickEditLink(this.props.student.id);
   },
   handleDelete: function () {
-    var post_path = base_url + "students/" + this.props.student.id;
-    // $.ajax({async: false, url: post_path, type: "DELETE"});
+    var post_path = base_url + "products/" + this.props.student.id;
+    //$.ajax({async: false, url: post_path, type: "DELETE", success: function(){}});
     this.props.onClickDeleteLink();
   },
   render: function () {
@@ -75,9 +69,6 @@ var StudentInfo = React.createClass({
       <div className={"frame-level-0 " + this.props.className}>
         <h3>Student Info.</h3>
         <p><strong>Name:</strong>{this.props.student.name}</p>
-        <p><strong>Level:</strong>{this.props.student.level}</p>
-        <p><strong>GPA:</strong>{this.props.student.gpa}</p>
-        <p><strong>Address:</strong>{this.props.student.address}</p>
         <button className={"btn btn-default"} onClick={this.props.onClickIndexLink} >Back to Index</button>
         <button className={"btn btn-default"} onClick={this.handleEdit}>Edit</button>
         <button className={"btn btn-danger"} onClick={this.handleDelete}>Delete</button>
@@ -95,15 +86,6 @@ var StudentEdit = React.createClass({
   },
   handleInputName: function (event) {
     this.setState({student: {...this.state.student, name: event.target.value}});
-  },
-  handleInputLevel: function (event) {
-    this.setState({student: {...this.state.student, level: event.target.value}});
-  },
-  handleInputGpa: function (event) {
-    this.setState({student: {...this.state.student, gpa: event.target.value}});
-  },
-  handleInputAddress: function (event) {
-    this.setState({student: {...this.state.student, address: event.target.value}});
   },
   handleSubmit: function (event) {
     event.preventDefault();
@@ -126,18 +108,6 @@ var StudentEdit = React.createClass({
               <tr>
                 <td><strong>Name:</strong></td>
                 <td><input name="student[name]" onChange={this.handleInputName} value={this.state.student.name} /></td>
-              </tr>
-              <tr>
-                <td><strong>Level:</strong></td>
-                <td><input name="student[level]" onChange={this.handleInputLevel} value={this.state.student.level} /></td>
-              </tr>
-              <tr>
-                <td><strong>GPA:</strong></td>
-                <td><input name="student[gpa]" onChange={this.handleInputGpa} value={this.state.student.gpa} /></td>
-              </tr>
-              <tr>
-                <td><strong>Address:</strong></td>
-                <td><input name="student[address]" onChange={this.handleInputAddress} value={this.state.student.address} /></td>
               </tr>
             </tbody>
           </table>
@@ -167,22 +137,10 @@ var StudentCreate = React.createClass({
                 <td><strong>Name:</strong></td>
                 <td><input name="student[name]" /></td>
               </tr>
-              <tr>
-                <td><strong>Level:</strong></td>
-                <td><input name="student[level]" /></td>
-              </tr>
-              <tr>
-                <td><strong>GPA:</strong></td>
-                <td><input name="student[gpa]" /></td>
-              </tr>
-              <tr>
-                <td><strong>Address:</strong></td>
-                <td><input name="student[address]" /></td>
-              </tr>
             </tbody>
           </table>
           <button className={"btn btn-default"} onClick={this.props.onClickIndexLink} >Back to Index</button>
-          <button className={"btn btn-success"} type="submit">Create</button>
+          <button className={"btn btn-success"} onClick={} type="submit">Create</button>
         </form>
       </div>
     );
@@ -214,7 +172,7 @@ var App = React.createClass({
       studentCreateClass: "hide",
       studentEditClass: "hide",
       students: this.fetchStudents(),
-      student: {id: -1, name: "", level: -1, gpa: -1, address: ""}
+      student: {id: -1, name: ""}
     }
   },
 
