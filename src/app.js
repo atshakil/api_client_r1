@@ -1,4 +1,12 @@
-var json_data = [{"id":1,"name":"Student 1","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:47:34.673Z","updated_at":"2016-08-23T15:47:34.673Z"},{"id":2,"name":"Student 2","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:16.509Z","updated_at":"2016-08-23T15:48:16.509Z"},{"id":3,"name":"Student 3","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:23.469Z","updated_at":"2016-08-23T15:48:23.469Z"},{"id":4,"name":"Student 4","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:27.484Z","updated_at":"2016-08-23T15:48:27.484Z"},{"id":5,"name":"Student 5","gpa":4.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:37.621Z","updated_at":"2016-08-23T15:48:37.621Z"}]
+//var json_data = [{"id":1,"name":"Student 1","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:47:34.673Z","updated_at":"2016-08-23T15:47:34.673Z"},{"id":2,"name":"Student 2","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:16.509Z","updated_at":"2016-08-23T15:48:16.509Z"},{"id":3,"name":"Student 3","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:23.469Z","updated_at":"2016-08-23T15:48:23.469Z"},{"id":4,"name":"Student 4","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:27.484Z","updated_at":"2016-08-23T15:48:27.484Z"},{"id":5,"name":"Student 5","gpa":4.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:37.621Z","updated_at":"2016-08-23T15:48:37.621Z"}]
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Router, Route, hashHistory } from 'react-router'
+import Students from './components/Students'
+import StudentInfo from './components/StudentInfo'
+import StudentEdit from './components/StudentEdit'
+import StudentCreate from './components/StudentCreate'
+
 var base_url = "http://0.0.0.0:9000/"
 
 var pages = {
@@ -14,153 +22,11 @@ var Helper = {
   }
 }
 
-var Students = React.createClass({
-  handleNew: function () {
-    this.props.onClickNewLink();
-  },
-
-  render: function () {
-    var rows = [];
-    var onClickStudentLink = this.props.onClickStudentLink;
-    this.props.students.forEach(function (student) {
-      rows.push(<Student {...student} key={student.id} onClickStudentLink={onClickStudentLink} />);
-    });
-    return (
-      <div className={"frame-level-0 " + this.props.className}>
-        <h3>Students</h3>
-        <table className="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </table>
-        <button className={"btn btn-default pull-right"} onClick={this.handleNew}>Create Student</button>
-      </div>
-    );
-  }
-});
-
-var Student = React.createClass({
-  handleLink: function () {
-    this.props.onClickStudentLink(this.props.id);
-  },
-  render: function () {
-    return (
-      <tr>
-        <td><a href="#" onClick={this.handleLink}>{this.props.name}</a></td>
-      </tr>
-    );
-  }
-});
-
-var StudentInfo = React.createClass({
-  handleEdit: function () {
-    this.props.onClickEditLink(this.props.student.id);
-  },
-  handleDelete: function () {
-    var post_path = base_url + "products/" + this.props.student.id;
-    //$.ajax({async: false, url: post_path, type: "DELETE", success: function(){}});
-    this.props.onClickDeleteLink();
-  },
-  render: function () {
-    return (
-      <div className={"frame-level-0 " + this.props.className}>
-        <h3>Student Info.</h3>
-        <p><strong>Name:</strong>{this.props.student.name}</p>
-        <button className={"btn btn-default"} onClick={this.props.onClickIndexLink} >Back to Index</button>
-        <button className={"btn btn-default"} onClick={this.handleEdit}>Edit</button>
-        <button className={"btn btn-danger"} onClick={this.handleDelete}>Delete</button>
-      </div>
-    );
-  }
-});
-
-var StudentEdit = React.createClass({
-  getInitialState: function () {
-    return {student: this.props.student}
-  },
-  componentWillReceiveProps: function (nextProps) {
-    this.setState({student: nextProps.student});
-  },
-  handleInputName: function (event) {
-    this.setState({student: {...this.state.student, name: event.target.value}});
-  },
-  handleSubmit: function (event) {
-    event.preventDefault();
-    var post_path = base_url + "students/" + this.state.student.id;
-    // $.ajax({async: false, url: post_path, type: "PATCH", data: {
-    //   "student[name]": this.state.student.name,
-    //   "student[level]": this.state.student.level,
-    //   "student[gpa]": this.state.student.gpa,
-    //   "student[address]": this.state.student.address
-    // } });
-    this.props.onClickSaveLink();
-  },
-  render: function () {
-    return (
-      <div className={"frame-level-0 " + this.props.className}>
-        <h3>Edit Student</h3>
-        <form onSubmit={this.handleSubmit} className="edit-form">
-          <table className="table tbl-noborder">
-            <tbody>
-              <tr>
-                <td><strong>Name:</strong></td>
-                <td><input name="student[name]" onChange={this.handleInputName} value={this.state.student.name} /></td>
-              </tr>
-            </tbody>
-          </table>
-          <button className={"btn btn-default"} onClick={this.props.onClickIndexLink} >Back to Index</button>
-          <button className={"btn btn-default"} type="submit" onClick={this.handleSubmit}>Save</button>
-        </form>
-      </div>
-    );
-  }
-});
-
-var StudentCreate = React.createClass({
-  handleChange: function () {
-
-  },
-  handleSubmit: function () {
-
-  },
-  render: function () {
-    return (
-      <div className={"frame-level-0 " + this.props.className}>
-        <h3>Create Student</h3>
-        <form onSubmit={this.handleSubmit} className="create-form">
-          <table className="table tbl-noborder">
-            <tbody>
-              <tr>
-                <td><strong>Name:</strong></td>
-                <td><input name="student[name]" /></td>
-              </tr>
-            </tbody>
-          </table>
-          <button className={"btn btn-default"} onClick={this.props.onClickIndexLink} >Back to Index</button>
-          <button className={"btn btn-success"} type="submit">Create</button>
-        </form>
-      </div>
-    );
-  }
-});
-
 var App = React.createClass({
   fetchStudents: function () {
     var students = [];
 
     $.ajax({async: false, url: base_url+"products", type: 'GET', success: function (data) {students = data;} });
-    // $.ajax({
-    //   url: base_url,
-    //   success: function(data){
-    //     students = data;
-    //   },
-    //   error: function(xhr, textStatus, errorThrown){
-    //     console.log("Couldn't access resource.");
-    //   }
-    // });
     return students;
   },
 
@@ -250,4 +116,8 @@ var App = React.createClass({
   }
 });
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render((
+  <Router history={hashHistory}>
+    <Route path="/" component={App} />
+  </Router>
+), document.getElementById("app"));
