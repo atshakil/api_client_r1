@@ -1,7 +1,7 @@
 //var json_data = [{"id":1,"name":"Student 1","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:47:34.673Z","updated_at":"2016-08-23T15:47:34.673Z"},{"id":2,"name":"Student 2","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:16.509Z","updated_at":"2016-08-23T15:48:16.509Z"},{"id":3,"name":"Student 3","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:23.469Z","updated_at":"2016-08-23T15:48:23.469Z"},{"id":4,"name":"Student 4","gpa":5.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:27.484Z","updated_at":"2016-08-23T15:48:27.484Z"},{"id":5,"name":"Student 5","gpa":4.0,"level":6,"address":"Dhaka","created_at":"2016-08-23T15:48:37.621Z","updated_at":"2016-08-23T15:48:37.621Z"}]
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route, hashHistory } from 'react-router'
+import { Router, Route, hashHistory, Link } from 'react-router'
 import Students from './components/Students'
 import StudentInfo from './components/StudentInfo'
 import StudentEdit from './components/StudentEdit'
@@ -107,17 +107,33 @@ var App = React.createClass({
   render: function () {
     return (
       <div>
-        <Students onClickStudentLink={this.handleStudentLink} onClickNewLink={this.handleNewLink} className={"students " + this.state.studentsClass} students={this.state.students} ref={(ref) => this._students = ref} />
-        <StudentInfo onClickIndexLink={this.handleIndexLink} onClickEditLink={this.handleEditLink} onClickDeleteLink={this.handleDeleteLink} className={"student-info " + this.state.studentInfoClass} student={this.state.student} />
-        <StudentCreate onClickIndexLink={this.handleIndexLink} className={"student-create " + this.state.studentCreateClass} student={this.state.student} />
-        <StudentEdit onClickIndexLink={this.handleIndexLink} onClickSaveLink={this.handleSaveLink} className={"student-edit " + this.state.studentEditClass} student={this.state.student} ref={(ref) => this._student_edit = ref} />
+        <ul role="nav">
+          <li><Link to="/">Home</Link></li>
+        </ul>
+        LAYOUT#LAYOUT#LAYOUT#LAYOUT#
+        ~~~~~~~~~~~~~~~~~~~~~
+        {this.props.children}
+        ~~~~~~~~~~~~~~~~~~~~~
+        LAYOUT#LAYOUT#LAYOUT#LAYOUT#
       </div>
     );
+    // return (
+    //   <div>
+    //     <Students onClickStudentLink={this.handleStudentLink} onClickNewLink={this.handleNewLink} className={"students " + this.state.studentsClass} students={this.state.students} ref={(ref) => this._students = ref} />
+    //     <StudentInfo onClickIndexLink={this.handleIndexLink} onClickEditLink={this.handleEditLink} onClickDeleteLink={this.handleDeleteLink} className={"student-info " + this.state.studentInfoClass} student={this.state.student} />
+    //     <StudentCreate onClickIndexLink={this.handleIndexLink} className={"student-create " + this.state.studentCreateClass} student={this.state.student} />
+    //     <StudentEdit onClickIndexLink={this.handleIndexLink} onClickSaveLink={this.handleSaveLink} className={"student-edit " + this.state.studentEditClass} student={this.state.student} ref={(ref) => this._student_edit = ref} />
+    //   </div>
+    // );
   }
 });
 
 ReactDOM.render((
   <Router history={hashHistory}>
-    <Route path="/" component={App} />
+    <Route path="/" component={App}>
+      <Route path="/students" component={Students} />
+      <Route path="/students/:id" component={StudentInfo} />
+      <Route path="/students/new" component={StudentCreate} />
+    </Route>
   </Router>
 ), document.getElementById("app"));

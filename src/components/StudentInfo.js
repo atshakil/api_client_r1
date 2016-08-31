@@ -1,6 +1,9 @@
 import React from 'react'
 
 export default React.createClass({
+  handleIndex() {
+
+  },
   handleEdit: function () {
     this.props.onClickEditLink(this.props.student.id);
   },
@@ -14,7 +17,7 @@ export default React.createClass({
       <div className={"frame-level-0 " + this.props.className}>
         <h3>Student Info.</h3>
         <p><strong>Name:</strong>{this.props.student.name}</p>
-        <button className={"btn btn-default"} onClick={this.props.onClickIndexLink} >Back to Index</button>
+        <button className={"btn btn-default"} onClick={this.handle} >Back to Index</button>
         <button className={"btn btn-default"} onClick={this.handleEdit}>Edit</button>
         <button className={"btn btn-danger"} onClick={this.handleDelete}>Delete</button>
       </div>

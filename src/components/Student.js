@@ -2,7 +2,7 @@ import React from 'react'
 
 export default React.createClass({
   handleLink: function () {
-    this.props.onClickStudentLink(this.props.id);
+    //this.props.onClickStudentLink(this.props.id);
   },
   render: function () {
     return (

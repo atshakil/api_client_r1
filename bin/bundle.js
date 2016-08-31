@@ -179,27 +179,47 @@
 	  },
 
 	  render: function render() {
-	    var _this = this;
-
 	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2.default.createElement(_Students2.default, { onClickStudentLink: this.handleStudentLink, onClickNewLink: this.handleNewLink, className: "students " + this.state.studentsClass, students: this.state.students, ref: function ref(_ref) {
-	          return _this._students = _ref;
-	        } }),
-	      _react2.default.createElement(_StudentInfo2.default, { onClickIndexLink: this.handleIndexLink, onClickEditLink: this.handleEditLink, onClickDeleteLink: this.handleDeleteLink, className: "student-info " + this.state.studentInfoClass, student: this.state.student }),
-	      _react2.default.createElement(_StudentCreate2.default, { onClickIndexLink: this.handleIndexLink, className: "student-create " + this.state.studentCreateClass, student: this.state.student }),
-	      _react2.default.createElement(_StudentEdit2.default, { onClickIndexLink: this.handleIndexLink, onClickSaveLink: this.handleSaveLink, className: "student-edit " + this.state.studentEditClass, student: this.state.student, ref: function ref(_ref2) {
-	          return _this._student_edit = _ref2;
-	        } })
+	      _react2.default.createElement(
+	        'ul',
+	        { role: 'nav' },
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/' },
+	            'Home'
+	          )
+	        )
+	      ),
+	      'LAYOUT#LAYOUT#LAYOUT#LAYOUT# ~~~~~~~~~~~~~~~~~~~~~',
+	      this.props.children,
+	      '~~~~~~~~~~~~~~~~~~~~~ LAYOUT#LAYOUT#LAYOUT#LAYOUT#'
 	    );
+	    // return (
+	    //   <div>
+	    //     <Students onClickStudentLink={this.handleStudentLink} onClickNewLink={this.handleNewLink} className={"students " + this.state.studentsClass} students={this.state.students} ref={(ref) => this._students = ref} />
+	    //     <StudentInfo onClickIndexLink={this.handleIndexLink} onClickEditLink={this.handleEditLink} onClickDeleteLink={this.handleDeleteLink} className={"student-info " + this.state.studentInfoClass} student={this.state.student} />
+	    //     <StudentCreate onClickIndexLink={this.handleIndexLink} className={"student-create " + this.state.studentCreateClass} student={this.state.student} />
+	    //     <StudentEdit onClickIndexLink={this.handleIndexLink} onClickSaveLink={this.handleSaveLink} className={"student-edit " + this.state.studentEditClass} student={this.state.student} ref={(ref) => this._student_edit = ref} />
+	    //   </div>
+	    // );
 	  }
 	});
 
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRouter.Router,
 	  { history: _reactRouter.hashHistory },
-	  _react2.default.createElement(_reactRouter.Route, { path: '/', component: App })
+	  _react2.default.createElement(
+	    _reactRouter.Route,
+	    { path: '/', component: App },
+	    _react2.default.createElement(_reactRouter.Route, { path: '/students', component: _Students2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/students/:id', component: _StudentInfo2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/students/new', component: _StudentCreate2.default })
+	  )
 	), document.getElementById("app"));
 
 /***/ },
@@ -25549,22 +25569,38 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var base_url = "http://0.0.0.0:9000/";
+	// onClickStudentLink={this.handleStudentLink}
+	// onClickNewLink={this.handleNewLink}
+	// students={this.state.students}
+	// ref={(ref) => this._students = ref}
+
 	exports.default = _react2.default.createClass({
 	  displayName: 'Students',
+	  fetchStudents: function fetchStudents() {
+	    var students = [];
 
-	  handleNew: function handleNew() {
-	    this.props.onClickNewLink();
+	    $.ajax({ async: false, url: base_url + "products", type: 'GET', success: function success(data) {
+	        students = data;
+	      } });
+	    return students;
 	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      students: this.fetchStudents()
+	    };
+	  },
+	  handleNewLink: function handleNewLink() {},
+
 
 	  render: function render() {
 	    var rows = [];
-	    var onClickStudentLink = this.props.onClickStudentLink;
-	    this.props.students.forEach(function (student) {
-	      rows.push(_react2.default.createElement(_Student2.default, _extends({}, student, { key: student.id, onClickStudentLink: onClickStudentLink })));
+	    this.state.students.forEach(function (student) {
+	      rows.push(_react2.default.createElement(_Student2.default, _extends({}, student, { key: student.id })));
 	    });
 	    return _react2.default.createElement(
 	      'div',
-	      { className: "frame-level-0 " + this.props.className },
+	      { className: 'frame-level-0' },
 	      _react2.default.createElement(
 	        'h3',
 	        null,
@@ -25594,7 +25630,7 @@
 	      ),
 	      _react2.default.createElement(
 	        'button',
-	        { className: "btn btn-default pull-right", onClick: this.handleNew },
+	        { className: "btn btn-default pull-right", onClick: this.handleNewLink },
 	        'Create Student'
 	      )
 	    );
@@ -25621,7 +25657,7 @@
 	  displayName: "Student",
 
 	  handleLink: function handleLink() {
-	    this.props.onClickStudentLink(this.props.id);
+	    //this.props.onClickStudentLink(this.props.id);
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
@@ -25658,6 +25694,7 @@
 
 	exports.default = _react2.default.createClass({
 	  displayName: "StudentInfo",
+	  handleIndex: function handleIndex() {},
 
 	  handleEdit: function handleEdit() {
 	    this.props.onClickEditLink(this.props.student.id);
@@ -25688,7 +25725,7 @@
 	      ),
 	      _react2.default.createElement(
 	        "button",
-	        { className: "btn btn-default", onClick: this.props.onClickIndexLink },
+	        { className: "btn btn-default", onClick: this.handle },
 	        "Back to Index"
 	      ),
 	      _react2.default.createElement(
@@ -25816,12 +25853,12 @@
 	exports.default = _react2.default.createClass({
 	  displayName: "StudentCreate",
 
-	  handleChange: function handleChange() {},
 	  handleSubmit: function handleSubmit() {},
+	  handleIndexLink: function handleIndexLink() {},
 	  render: function render() {
 	    return _react2.default.createElement(
 	      "div",
-	      { className: "frame-level-0 " + this.props.className },
+	      { className: "frame-level-0" },
 	      _react2.default.createElement(
 	        "h3",
 	        null,
@@ -25858,7 +25895,7 @@
 	        ),
 	        _react2.default.createElement(
 	          "button",
-	          { className: "btn btn-default", onClick: this.props.onClickIndexLink },
+	          { className: "btn btn-default", onClick: this.handleIndexLink },
 	          "Back to Index"
 	        ),
 	        _react2.default.createElement(
